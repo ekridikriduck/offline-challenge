@@ -50,9 +50,15 @@ Add them to your .env.local
 ### `Packages Used`
 
 [Reactstrap](https://github.com/reactstrap/reactstrap)
+
 [AWS Amplify](https://github.com/aws-amplify/amplify-js)
+
 [Classnames](https://github.com/JedWatson/classnames)
+
 [Validator](https://github.com/tarunbatra/password-validator)
+
 [QRCode](http://zpao.github.io/qrcode.react)
+
 [React Routere](https://github.com/remix-run/react-router)
+
 [React Icons](https://github.com/react-icons/react-icons)

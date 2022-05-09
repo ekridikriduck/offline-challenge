@@ -1,31 +1,32 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
+import { Auth } from "aws-amplify";
+import { UncontrolledTooltip } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import { GoSignOut } from "react-icons/go";
 import { AppModal } from "./AppModal";
 import { AppViewModal } from "./AppViewModal";
-import { generateUUID } from "../../utils";
-import { Auth } from "aws-amplify";
-import { useNavigate } from "react-router-dom";
-import { UncontrolledTooltip } from "reactstrap";
-import { GoSignOut } from "react-icons/go";
+import { listApplications, createApplication } from "../../api";
+import { Loader } from "../../components";
 
 export const Dashboard = () => {
   const [modalOpen, toggleModal] = useState(false);
   const [appList, setAppList] = useState([]);
   const [selectedApp, setSelectedApp] = useState(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  const getCurrentSession = useCallback(async () => {
-    try {
-      await Auth.currentSession();
-    } catch (err) {
-      navigate("/");
-    }
-  }, [navigate]);
+  const listUserApps = useCallback(async () => {
+    const apps = await listApplications();
+    setAppList(apps);
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    getCurrentSession();
-  }, [getCurrentSession]);
+    listUserApps();
+  }, [listUserApps]);
 
   const children = useMemo(() => {
+    if (loading) return <Loader />;
     return appList.length > 0 ? (
       appList.map((elm, idx) => {
         const { appName, chain } = elm;
@@ -41,7 +42,6 @@ export const Dashboard = () => {
         );
       })
     ) : (
-      // </div>
       <div className="empty-state">
         <div className="empty-state-title">No Application Found</div>
         <div className="empty-state-sub">
@@ -50,15 +50,17 @@ export const Dashboard = () => {
         </div>
       </div>
     );
-  }, [appList]);
+  }, [appList, loading]);
 
-  const onSaveApp = (appName, chain) => {
-    const appID = generateUUID();
-    const appSecret = generateUUID();
-    const tempArr = [...appList];
-    tempArr.push({ appID, appSecret, appName, chain });
-    setAppList(tempArr);
-    toggleModal(false);
+  const onSaveApp = async (appName, chain) => {
+    try {
+      await createApplication({ appName, chain });
+      await listUserApps();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      toggleModal(false);
+    }
   };
 
   const onSignOut = async () => {

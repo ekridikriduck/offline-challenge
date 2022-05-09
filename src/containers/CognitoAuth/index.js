@@ -1,5 +1,5 @@
 import { Auth } from "aws-amplify";
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { SigninForm } from "./Signin";
 import { SignupForm } from "./SignUp";
@@ -7,19 +7,6 @@ import { SignupForm } from "./SignUp";
 export const CognitoAuth = () => {
   const navigate = useNavigate();
   const [currentForm, setCurrentForm] = useState("SIGN_IN");
-
-  const getCurrentSession = useCallback(async () => {
-    try {
-      await Auth.currentSession();
-      navigate("/dashboard");
-    } catch (err) {
-      console.log("No Valid Session Found");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    getCurrentSession();
-  }, [getCurrentSession]);
 
   const awsSignUp = async (username, password) => {
     const { user } = await Auth.signUp({ username, password });

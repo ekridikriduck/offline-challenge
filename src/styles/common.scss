@@ -1,0 +1,54 @@
+.primary-btn {
+  min-width: 150px;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-radius: 6px;
+  box-shadow: none !important;
+  color: black !important;
+  background-color: rgb(252, 213, 53) !important;
+  border: none;
+  &:hover {
+    background-color: rgb(227, 193, 49) !important;
+  }
+  &.clr-transp {
+    background-color: transparent !important;
+    color: #3559fc !important;
+    border: 1px solid #3559fc;
+  }
+  &.clr-blue {
+    background-color: #3559fc !important;
+    color: #fff !important;
+  }
+}
+
+.input-wrapper {
+  margin-bottom: 1.25rem;
+  position: relative;
+  i {
+    position: absolute;
+    top: 55%;
+    right: 15px;
+    cursor: pointer;
+    color: grey;
+  }
+  span {
+    position: absolute;
+    color: red;
+  }
+}
+
+.text-input {
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  width: 100%;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: Dongle, sans-serif;
+  background-color: #eff2f5;
+  box-shadow: none !important;
+
+  &.error {
+    border: 1px solid red !important;
+  }
+}
